@@ -3,6 +3,7 @@ package com.aktansanhal.homeworkweek2.controller;
 
 import com.aktansanhal.homeworkweek2.controller.contract.ProductControllerContract;
 import com.aktansanhal.homeworkweek2.dto.request.ProductRequestDTO;
+import com.aktansanhal.homeworkweek2.dto.request.ProductUpdateDTO;
 import com.aktansanhal.homeworkweek2.dto.response.ProductResponseDTO;
 import com.aktansanhal.homeworkweek2.error.DataResult;
 import com.aktansanhal.homeworkweek2.error.Result;
@@ -40,8 +41,8 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DataResult<ProductResponseDTO>> updateProduct(@PathVariable Long id, @RequestBody ProductRequestDTO productRequestDTO){
-        return ResponseEntity.status(HttpStatus.OK).body(new SuccessDataResult<>("Güncelleme başarılı", productControllerContract.updateProduct(id, productRequestDTO)));
+    public ResponseEntity<DataResult<ProductResponseDTO>> updateProduct(@PathVariable Long id, @RequestBody ProductUpdateDTO productUpdateDTO){
+        return ResponseEntity.status(HttpStatus.OK).body(new SuccessDataResult<>("Güncelleme başarılı", productControllerContract.updateProduct(id, productUpdateDTO)));
     }
 
     @GetMapping("/{id}")

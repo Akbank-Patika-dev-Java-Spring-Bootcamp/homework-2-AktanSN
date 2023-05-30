@@ -6,7 +6,9 @@ import com.aktansanhal.homeworkweek2.dto.response.UserResponseDTO;
 import com.aktansanhal.homeworkweek2.entity.User;
 import com.aktansanhal.homeworkweek2.exception.exceptions.MyException;
 import com.aktansanhal.homeworkweek2.mapper.UserMapper;
+import com.aktansanhal.homeworkweek2.service.CommentService;
 import com.aktansanhal.homeworkweek2.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ public class UserControllerContractImpl implements UserControllerContract {
 
     private final UserMapper userMapper;
     private final UserService userService;
+
+    private final CommentService commentService;
 
     @Override
     public UserResponseDTO saveUser(UserRequestDTO userRequestDTO) {
@@ -32,10 +36,25 @@ public class UserControllerContractImpl implements UserControllerContract {
         return userResponseDTOS;
     }
 
+    @Transactional
     @Override
-    public void deleteUser(Long id) {
-        User user = userService.findById(id).orElseThrow();
+    public void deleteUser(Long id, String username, String phoneNumber) {
+        User user = userService.findById(id).orElseThrow(() -> new MyException("Silme Yapılamadı"));
+
+        if (!user.getUsername().equals(username) || !user.getPhoneNumber().equals(phoneNumber)) {
+            throw new MyException("Kullanıcı adı ile Telefon bilgileri uyuşmamaktadır");
+        }
+
+
+        deleteCommentsByUser(user);
+
+
         userService.delete(user);
+    }
+
+    private void deleteCommentsByUser(User user) {
+
+        commentService.deleteCommentsByUser(user);
     }
 
     @Override
@@ -43,6 +62,9 @@ public class UserControllerContractImpl implements UserControllerContract {
         User user = userService.findById(id).orElseThrow(() -> new MyException("Güncelleme Yapılamadı"));
         user.setUsername(userRequestDTO.username());
         user.setPhoneNumber(userRequestDTO.phoneNumber());
+        user.setEmail(userRequestDTO.email());
+        user.setUserType(userRequestDTO.userType());
+        user.setPassword(userRequestDTO.password());
         UserResponseDTO userResponseDTO = userMapper.toResponseDTO(userService.save(user));
 
         return userResponseDTO;

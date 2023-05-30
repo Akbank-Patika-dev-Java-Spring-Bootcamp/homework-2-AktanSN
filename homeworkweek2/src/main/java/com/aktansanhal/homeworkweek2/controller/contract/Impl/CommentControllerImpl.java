@@ -49,6 +49,9 @@ public class CommentControllerImpl implements CommentControllerContract {
     @Override
     public List<CommentResponseDTO> getComments() {
         List<CommentResponseDTO> commentResponseDTOS = commentService.findAll().stream().map(commentMapper::toResponseDTO).collect(java.util.stream.Collectors.toList());
+        if(commentResponseDTOS.isEmpty()){
+            throw new MyException("Henüz bir yorum yazılmamıştır");
+        }
         return commentResponseDTOS;
     }
 
@@ -69,6 +72,9 @@ public class CommentControllerImpl implements CommentControllerContract {
         List<Comment> product = commentService.findAllByProductId(id);
         List<CommentResponseDTO> commentResponseDTOS = product.stream().map(commentMapper::toResponseDTO).toList();
 
+        if (commentResponseDTOS.isEmpty()){
+            throw new MyException("Ürüne henüz bir yorum yazılmamıştır");
+        }
         return commentResponseDTOS;
     }
 
@@ -76,7 +82,9 @@ public class CommentControllerImpl implements CommentControllerContract {
     public List<CommentResponseDTO> getCommentsByUserId(Long id) {
         List<Comment> user = commentService.findAllByUserId(id);
         List<CommentResponseDTO> commentResponseDTOS = user.stream().map(commentMapper::toResponseDTO).toList();
-
+        if (commentResponseDTOS.isEmpty()){
+            throw new MyException("Kullanıcı adına henüz bir yorum yazılmamıştır");
+        }
         return commentResponseDTOS;
     }
 }

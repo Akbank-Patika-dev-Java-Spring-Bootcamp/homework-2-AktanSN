@@ -35,8 +35,9 @@ public class UserController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Result> deleteUser(@PathVariable Long id){
-        return ResponseEntity.status(HttpStatus.OK).body(new SuccessResult("Silme Başarılı"));
+    public ResponseEntity<Result> deleteUser(@PathVariable Long id, @RequestParam String username, @RequestParam String phoneNumber){
+        userControllerContract.deleteUser(id, username, phoneNumber);
+        return ResponseEntity.status(HttpStatus.OK).body(new SuccessResult("Silindi"));
     }
 
     @PutMapping("/{id}")

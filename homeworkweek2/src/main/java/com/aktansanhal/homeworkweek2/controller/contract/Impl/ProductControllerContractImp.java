@@ -3,6 +3,7 @@ package com.aktansanhal.homeworkweek2.controller.contract.Impl;
 
 import com.aktansanhal.homeworkweek2.controller.contract.ProductControllerContract;
 import com.aktansanhal.homeworkweek2.dto.request.ProductRequestDTO;
+import com.aktansanhal.homeworkweek2.dto.request.ProductUpdateDTO;
 import com.aktansanhal.homeworkweek2.dto.response.ProductResponseDTO;
 import com.aktansanhal.homeworkweek2.entity.Product;
 import com.aktansanhal.homeworkweek2.exception.exceptions.MyException;
@@ -25,7 +26,11 @@ public class ProductControllerContractImp implements ProductControllerContract {
     @Override
     public ProductResponseDTO saveProduct(ProductRequestDTO productRequestDTO) {
         Product product = productService.save(productMapper.toProduct(productRequestDTO));
+
+
         ProductResponseDTO productResponseDTO = productMapper.toResponseDTO(product);
+
+
         return productResponseDTO;
     }
 
@@ -41,8 +46,8 @@ public class ProductControllerContractImp implements ProductControllerContract {
     }
 
     @Override
-    public ProductResponseDTO updateProduct(Long id, ProductRequestDTO productRequestDTO) {
-        Product product = productService.updateProduct(productRequestDTO.price(), id);
+    public ProductResponseDTO updateProduct(Long id, ProductUpdateDTO productUpdateDTO) {
+        Product product = productService.updateProduct(productUpdateDTO.price(), id);
         ProductResponseDTO productResponseDTO = productMapper.toResponseDTO(product);
         return productResponseDTO;
     }

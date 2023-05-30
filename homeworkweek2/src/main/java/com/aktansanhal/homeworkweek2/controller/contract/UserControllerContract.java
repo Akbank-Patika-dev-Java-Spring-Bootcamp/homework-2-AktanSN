@@ -10,7 +10,7 @@ public interface UserControllerContract {
     UserResponseDTO saveUser(UserRequestDTO userRequestDTO);
     List<UserResponseDTO> getUsers();
 
-    void deleteUser(Long id);
+    void deleteUser(Long id, String username, String phoneNumber);
 
     UserResponseDTO updateUser(Long id, UserRequestDTO userRequestDTO); //özelleştir
 

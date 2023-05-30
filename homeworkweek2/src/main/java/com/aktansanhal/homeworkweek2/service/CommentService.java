@@ -2,6 +2,7 @@ package com.aktansanhal.homeworkweek2.service;
 
 
 import com.aktansanhal.homeworkweek2.entity.Comment;
+import com.aktansanhal.homeworkweek2.entity.User;
 import com.aktansanhal.homeworkweek2.general.BaseEntityService;
 import com.aktansanhal.homeworkweek2.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,4 +31,7 @@ public class CommentService extends BaseEntityService<Comment, CommentRepository
         return commentRepository.findAllByProductId(productId);
     }
 
+    public void deleteCommentsByUser(User user) {
+        commentRepository.deleteByUser(user);
+    }
 }

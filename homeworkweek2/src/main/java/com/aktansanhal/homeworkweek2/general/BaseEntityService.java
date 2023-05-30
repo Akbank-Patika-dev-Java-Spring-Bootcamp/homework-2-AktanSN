@@ -1,6 +1,7 @@
 package com.aktansanhal.homeworkweek2.general;
 
 
+import com.aktansanhal.homeworkweek2.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -30,9 +31,14 @@ public abstract class BaseEntityService<E extends BaseEntity, R extends JpaRepos
 
 
         baseAdditionalFields.setUpdatedDate(LocalDateTime.now());
-
-
+        if(entity.getClass() == User.class){
+            baseAdditionalFields.setCreatedBy(((User) entity).getUserType().name());
+        }else {
+            baseAdditionalFields.setCreatedBy("COMPANY");
+        }
+        baseAdditionalFields.setUpdatedBy(baseAdditionalFields.getCreatedBy());
         entity.setBaseAdditionalFields(baseAdditionalFields);
+
 
         return repository.save(entity);
     }
